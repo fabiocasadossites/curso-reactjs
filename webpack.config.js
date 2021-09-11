@@ -7,19 +7,17 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 module.exports = {
   mode: isDevelopment ? "development" : "production",
   devtool: isDevelopment ? "eval-source-map" : "source-map",
-  entry: path.resolve(__dirname, "src", "index.jsx"),
+  entry: path.resolve(__dirname, "src", "index.tsx"),
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: [".js", ".jsx", "ts", "tsx"],
   },
   devServer: {
-    static: {
-      directory: path.join(__dirname, "public"),
-      hot: true,
-    },
+    static: path.resolve(__dirname, "public"),
+    hot: true,
   },
   plugins: [
     isDevelopment && new ReactRefreshWebpackPlugin(),
@@ -28,9 +26,8 @@ module.exports = {
     }),
   ].filter(Boolean),
   module: {
-    rules: [
-      {
-        test: /\.jsx$/,
+    rules: [{
+        test: /\.(j|t)sx$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -48,4 +45,4 @@ module.exports = {
       },
     ],
   },
-};
+}
